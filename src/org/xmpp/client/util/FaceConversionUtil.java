@@ -74,10 +74,10 @@ public class FaceConversionUtil {
 	
 	public SpannableString getExpressionString(Context context, String str) {
 		SpannableString spannableString = new SpannableString(str);
-		System.out.println(str+" here is getExpressionString");
-		// æ­£åˆ™è¡¨è¾¾å¼æ¯”é…å­—ç¬¦ä¸²é‡Œæ˜¯å¦å«æœ‰è¡¨æƒ…ï¼Œå¦‚ï¼š æˆ‘å¥½[å¼€å¿ƒ]å•Š
+		//System.out.println(str + " here is getExpressionString");
+		// ÕıÔò±í´ïÊ½±ÈÅä×Ö·û´®ÀïÊÇ·ñº¬ÓĞ±íÇé£¬Èç£º ÎÒºÃ[¿ªĞÄ]°¡
 		String zhengze = "\\[[^\\]]+\\]";
-		// é€šè¿‡ä¼ å…¥çš„æ­£åˆ™è¡¨è¾¾å¼æ¥ç”Ÿæˆä¸€ä¸ªpattern
+		// Í¨¹ı´«ÈëµÄÕıÔò±í´ïÊ½À´Éú³ÉÒ»¸öpattern
 		Pattern sinaPatten = Pattern.compile(zhengze, Pattern.CASE_INSENSITIVE);
 		try {
 			dealExpression(context, spannableString, sinaPatten, 0);
@@ -95,7 +95,7 @@ public class FaceConversionUtil {
 			String key = matcher.group();
 			key=key.replace("[", "").replace("]", "");
 			System.out.println(key+" key:");
-			// è¿”å›ç¬¬ä¸€ä¸ªå­—ç¬¦çš„ç´¢å¼•çš„æ–‡æœ¬åŒ¹é…æ•´ä¸ªæ­£åˆ™è¡¨è¾¾å¼,ture åˆ™ç»§ç»­é€’å½’
+			// ·µ»ØµÚÒ»¸ö×Ö·ûµÄË÷ÒıµÄÎÄ±¾Æ¥ÅäÕû¸öÕıÔò±í´ïÊ½,ture Ôò¼ÌĞøµİ¹é
 			if (matcher.start() < start) {
 				continue;
 			}
@@ -104,22 +104,22 @@ public class FaceConversionUtil {
 			}
 			int resId = context.getResources().getIdentifier(key, "drawable",
 					context.getPackageName());
-			// é€šè¿‡ä¸Šé¢åŒ¹é…å¾—åˆ°çš„å­—ç¬¦ä¸²æ¥ç”Ÿæˆå›¾ç‰‡èµ„æºid
+			// Í¨¹ıÉÏÃæÆ¥ÅäµÃµ½µÄ×Ö·û´®À´Éú³ÉÍ¼Æ¬×ÊÔ´id
 			// Field field=R.drawable.class.getDeclaredField(value);
 			// int resId=Integer.parseInt(field.get(null).toString());
 			if (resId != 0) {
 				Bitmap bitmap = BitmapFactory.decodeResource(
 						context.getResources(), resId);
 				bitmap = Bitmap.createScaledBitmap(bitmap, 50, 50, true);
-				// é€šè¿‡å›¾ç‰‡èµ„æºidæ¥å¾—åˆ°bitmapï¼Œç”¨ä¸€ä¸ªImageSpanæ¥åŒ…è£…
+				// Í¨¹ıÍ¼Æ¬×ÊÔ´idÀ´µÃµ½bitmap£¬ÓÃÒ»¸öImageSpanÀ´°ü×°
 				ImageSpan imageSpan = new ImageSpan(bitmap);
-				// è®¡ç®—è¯¥å›¾ç‰‡åå­—çš„é•¿åº¦ï¼Œä¹Ÿå°±æ˜¯è¦æ›¿æ¢çš„å­—ç¬¦ä¸²çš„é•¿åº¦
+				// ¼ÆËã¸ÃÍ¼Æ¬Ãû×ÖµÄ³¤¶È£¬Ò²¾ÍÊÇÒªÌæ»»µÄ×Ö·û´®µÄ³¤¶È
 				int end = matcher.start() + key.length()+2;
-				// å°†è¯¥å›¾ç‰‡æ›¿æ¢å­—ç¬¦ä¸²ä¸­è§„å®šçš„ä½ç½®ä¸­
+				// ½«¸ÃÍ¼Æ¬Ìæ»»×Ö·û´®ÖĞ¹æ¶¨µÄÎ»ÖÃÖĞ
 				spannableString.setSpan(imageSpan, matcher.start(), end,
 						Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 				if (end < spannableString.length()) {
-					// å¦‚æœæ•´ä¸ªå­—ç¬¦ä¸²è¿˜æœªéªŒè¯å®Œï¼Œåˆ™ç»§ç»­ã€‚ã€‚
+					// Èç¹ûÕû¸ö×Ö·û´®»¹Î´ÑéÖ¤Íê£¬Ôò¼ÌĞø¡£¡£
 					dealExpression(context, spannableString, patten, end);
 				}
 				break;

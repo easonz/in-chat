@@ -7,7 +7,7 @@ public class InMessage {
 	private InUser inUser;
 	private String content;
 	private Date createDate;
-	private boolean type;  //type:true message from friends ,false:msg from yourself
+	private MessageType type;  //type:true message from friends ,false:msg from yourself
 	public InUser getInUser() {
 		return inUser;
 	}
@@ -26,10 +26,10 @@ public class InMessage {
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
 	}
-	public boolean isType() {
+	public MessageType getType() {
 		return type;
 	}
-	public void setType(boolean type) {
+	public void setType(MessageType type) {
 		this.type = type;
 	}
 	

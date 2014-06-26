@@ -11,6 +11,7 @@ import java.util.Set;
 import pro.chinasoft.database.InSQLiteOpenHelper;
 import pro.chinasoft.model.InMessage;
 import pro.chinasoft.model.InUser;
+import pro.chinasoft.model.MessageType;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -20,7 +21,7 @@ public class InMessageStore {
 	
 	private static SQLiteDatabase db;
 
-	private static SQLiteDatabase getDb(boolean isRead,Context context) {
+	private static SQLiteDatabase getDb(boolean isRead, Context context) {
 		// 读取查询数据		
 		InSQLiteOpenHelper isqloh = new InSQLiteOpenHelper(context);
 		if(isRead){
@@ -28,12 +29,12 @@ public class InMessageStore {
 		}else{
 			return isqloh.getWritableDatabase();
 		}
-		//return SQLiteDatabase.openOrCreateDatabase("data/data/pro.chinasoft.activity/databases/mydata.db", null);
+//		return SQLiteDatabase.openOrCreateDatabase("data/data/pro.chinasoft.activity/databases/mydata.db", null);
 	}
 
-	public static  List<InMessage> getMessages(String userId, String friendId,int start ,int limit,Context context) {
+	public static  List<InMessage> getMessages(String userId, String friendId, int start, int limit, Context context) {
 		List<InMessage> result = new ArrayList<InMessage>();
-		db = getDb(true,context);
+		db = getDb(true, context);
 		Cursor c = db.rawQuery(
 				"select * from InMessage where userId=? and friendId=? order by id asc limit "+limit+" offset "+start,
 				new String[] { userId, friendId });
@@ -42,7 +43,7 @@ public class InMessageStore {
 			for (int i = 0; i < count; i++) {
 				InMessage inMessage = new InMessage();
 				inMessage.setContent(c.getString(c.getColumnIndex("content")));
-				inMessage.setType(c.getInt(c.getColumnIndex("type"))==1);
+				inMessage.setType(MessageType.valueOf(c.getInt(c.getColumnIndex("type"))));
 				inMessage.setCreateDate(new Date(c.getLong(c.getColumnIndex("createDate"))));
 				result.add(inMessage);
 				c.moveToNext();// 移动到指定记录
@@ -51,9 +52,23 @@ public class InMessageStore {
 
 		return result;
 	}
+	
+	public static long getMessageCounts(String userId, String friendId, Context context){
+		Long count = 0L;
+		db = getDb(true, context);
+		// 调用查找数据库代码并返回数据源
+		Cursor cursor = db.rawQuery("select count(*) from InMessage where userId=? and friendId=? order by id asc", 
+				new String[] { userId, friendId });
+		// 游标移到第一条记录准备获取数据
+		if(cursor.moveToFirst()){
+			// 获取数据中的LONG类型数据
+			count = cursor.getLong(0);
+		}
+		return count;
+	}
 
 	public static void saveOrUpdate(String userId, String friendId, String content,boolean type,Context context) {
-		db = getDb(false,context);
+		db = getDb(false, context);
 		ContentValues cv = new ContentValues();
 		cv.put("content", content);
 		cv.put("userId", userId);
@@ -84,14 +99,16 @@ public class InMessageStore {
 			for (int i = 0; i < count; i++) {
 				InMessage inMessage = new InMessage();
 				InUser user=new InUser();
-				user.setNick(c.getString(c.getColumnIndex("userId")));
+				user.setUserId(c.getString(c.getColumnIndex("friendId")));
+				user.setNick(c.getString(c.getColumnIndex("friendId")));
 				inMessage.setContent(c.getString(c.getColumnIndex("content")));
 				inMessage.setInUser(user);
+				inMessage.setCreateDate(new Date(c.getLong(c.getColumnIndex("createDate"))));
+				inMessage.setType(MessageType.valueOf(c.getInt(c.getColumnIndex("type"))));
 				result.add(inMessage);
 				c.moveToNext();// 移动到指定记录
 			}
 		}
-
 		return result;
 	}
 }

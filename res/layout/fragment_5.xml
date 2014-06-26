@@ -1,9 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#ffffff"
-    android:onClick="addFriend" >
+    android:background="#ffffff" >
 
     <RelativeLayout
         android:id="@+id/rl_layout"
@@ -13,16 +13,15 @@
         android:orientation="vertical" >
 
         <Button
-            android:id="@+id/addRoom"
-            style="@drawable/selector_btn_add"
-            android:layout_width="wrap_content"
+            android:id="@+id/btn_more"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
             android:background="@drawable/selector_btn_add"
             android:paddingRight="10dp"
-            android:text="添加"
+            android:text="更多"
             android:textColor="#ffffff"
             android:textSize="16sp" />
 
@@ -30,22 +29,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="聊天室"
+            android:text="日程"
             android:textColor="#ffffff"
             android:textSize="20.0sp" />
     </RelativeLayout>
 
-    <ListView
-        android:id="@+id/fragment_3_list"
+    <WebView
+        android:id="@+id/webView"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@id/rl_layout"
-        android:layout_marginLeft="10.0dip"
-        android:layout_marginRight="10.0dip"
-        android:layout_marginTop="10.0dip"
+        android:layout_height="fill_parent" 
+      	android:layout_below="@id/rl_layout"
         android:cacheColorHint="#00000000"
         android:divider="@null"
-        android:dividerHeight="5dp"
-        android:scrollbars="none" />
+        android:dividerHeight="5dp"/>
 
 </RelativeLayout>

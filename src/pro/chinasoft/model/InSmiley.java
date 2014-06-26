@@ -4,49 +4,49 @@ package pro.chinasoft.model;
 /**
  * 
  ******************************************
- * @author å»–ä¹ƒæ³¢
- * @æ–‡ä»¶åç§°	:  ChatEmoji.java
- * @åˆ›å»ºæ—¶é—´	: 2013-1-27 ä¸‹åˆ02:33:43
- * @æ–‡ä»¶æè¿°	: è¡¨æƒ…å¯¹è±¡å®ä½“
+ * @author ÁÎÄË²¨
+ * @ÎÄ¼şÃû³Æ	:  ChatEmoji.java
+ * @´´½¨Ê±¼ä	: 2013-1-27 ÏÂÎç02:33:43
+ * @ÎÄ¼şÃèÊö	: ±íÇé¶ÔÏóÊµÌå
  ******************************************
  */
 public class InSmiley {
 
-    /** è¡¨æƒ…èµ„æºå›¾ç‰‡å¯¹åº”çš„ID */
+    /** ±íÇé×ÊÔ´Í¼Æ¬¶ÔÓ¦µÄID */
     private int id;
 
-    /** è¡¨æƒ…èµ„æºå¯¹åº”çš„æ–‡å­—æè¿° */
+    /** ±íÇé×ÊÔ´¶ÔÓ¦µÄÎÄ×ÖÃèÊö */
     private String character;
 
-    /** è¡¨æƒ…èµ„æºçš„æ–‡ä»¶å */
+    /** ±íÇé×ÊÔ´µÄÎÄ¼şÃû */
     private String faceName;
 
-    /** è¡¨æƒ…èµ„æºå›¾ç‰‡å¯¹åº”çš„ID */
+    /** ±íÇé×ÊÔ´Í¼Æ¬¶ÔÓ¦µÄID */
     public int getId() {
         return id;
     }
 
-    /** è¡¨æƒ…èµ„æºå›¾ç‰‡å¯¹åº”çš„ID */
+    /** ±íÇé×ÊÔ´Í¼Æ¬¶ÔÓ¦µÄID */
     public void setId(int id) {
         this.id=id;
     }
 
-    /** è¡¨æƒ…èµ„æºå¯¹åº”çš„æ–‡å­—æè¿° */
+    /** ±íÇé×ÊÔ´¶ÔÓ¦µÄÎÄ×ÖÃèÊö */
     public String getCharacter() {
         return character;
     }
 
-    /** è¡¨æƒ…èµ„æºå¯¹åº”çš„æ–‡å­—æè¿° */
+    /** ±íÇé×ÊÔ´¶ÔÓ¦µÄÎÄ×ÖÃèÊö */
     public void setCharacter(String character) {
         this.character=character;
     }
 
-    /** è¡¨æƒ…èµ„æºçš„æ–‡ä»¶å */
+    /** ±íÇé×ÊÔ´µÄÎÄ¼şÃû */
     public String getFaceName() {
         return faceName;
     }
 
-    /** è¡¨æƒ…èµ„æºçš„æ–‡ä»¶å */
+    /** ±íÇé×ÊÔ´µÄÎÄ¼şÃû */
     public void setFaceName(String faceName) {
         this.faceName=faceName;
     }

@@ -22,28 +22,29 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-public class FragmentPage2 extends Fragment{
+public class FragmentPage2 extends Fragment {
 
 	private ArrayAdapter<InUser> friends = null;
 	private Button btn;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_2, container, false);
-		btn=(Button) view.findViewById(R.id.addFriend);
+		btn = (Button) view.findViewById(R.id.addFriend);
 		btn.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent();
-				intent.setClass(FragmentPage2.this.getActivity(), SearchFriendActivity.class);
+				intent.setClass(FragmentPage2.this.getActivity(),
+						SearchFriendActivity.class);
 				startActivity(intent);
-			} 
-			
+			}
+
 		});
 		ListView listView = (ListView) view.findViewById(R.id.fragment_2_list);
-		friends = new InUserArrayAdapter(getActivity(),
-				R.layout.in_user_list_item);
+		friends = new InUserArrayAdapter(getActivity(),	R.layout.in_user_list_item);
 
 		XMPPConnection conn = XmppTool.getConnection();
 		Roster roster = conn.getRoster();
@@ -54,10 +55,6 @@ public class FragmentPage2 extends Fragment{
 			friends.add(iu);
 		}
 
-		/*
-		 * for (int i = 0; i < 10; i++) { InUser iu = new InUser();
-		 * iu.setNick("ÕÅÈý"); friends.add(iu); listView.setAdapter(files); }
-		 */
 		listView.setAdapter(friends);
 		listView.setOnItemClickListener(new OnItemClickListener() {
 

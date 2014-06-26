@@ -38,12 +38,22 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
         <activity
+            android:name="pro.chinasoft.activity.SearchRoomActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
             android:name="pro.chinasoft.activity.InChatActivity"
             android:label="@string/title_activity_in_chat" 
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" 
             >
         </activity>
-
+        <activity
+            android:name="pro.chinasoft.activity.InRoomChatActivity"
+            android:label="@string/title_activity_in_chat" 
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" 
+            >
+        </activity>
+        
         <service
             android:name="pro.chinasoft.activity.InSmsService"
             android:exported="false"
@@ -61,6 +71,10 @@
 
         <activity
             android:name="pro.chinasoft.activity.AddFriendActivity"
+ 			android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="pro.chinasoft.activity.AddRoomActivity"
  			android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
         <activity

@@ -25,7 +25,7 @@
             android:layout_marginLeft="5dp"
             android:textSize="18sp"
             android:textColor="#000066"
-            android:text="张仲景" />
+            android:text="" />
 
         <TextView
             android:id="@+id/TextView01"

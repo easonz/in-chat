@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
- * 鑿滃崟椤?
+ * 菜单项
  * @author maylian7700@126.com
  *
  */
@@ -23,47 +23,47 @@ public class MenuItem
 	private LinearLayout mLayout;
 	
 	/**
-	 * 鏂囨湰鍦ㄥ浘鐗囩殑涓嬫柟鏄剧ず
+	 * 文本在图片的下方显示
 	 */
 	public static final int TEXT_BOTTOM = 0x0;
 	
 	/**
-	 * 鏂囨湰鍦ㄥ浘鐗囩殑涓婃柟鏄剧ず
+	 * 文本在图片的上方显示
 	 */
 	public static final int TEXT_TOP = 0x1;
 	
 	/**
-	 * 鏂囨湰鍦ㄥ浘鐗囩殑宸﹁竟鏄剧ず
+	 * 文本在图片的左边显示
 	 */
 	public static final int TEXT_LEFT = 0x2;
 	
 	/**
-	 * 鏂囨湰鍦ㄥ浘鐗囩殑鍙宠竟鏄剧ず
+	 * 文本在图片的右边显示
 	 */
 	public static final int TEXT_RIGHT = 0x3;
 	
 	/**
-	 * 鏂囨湰鐨勫榻愭柟寮?
+	 * 文本的对齐方式
 	 */
 	private int mAlign = TEXT_BOTTOM;
 	
 	/**
-	 * 鏂囨湰
+	 * 文本
 	 */
 	private String mText;
 	
 	/**
-	 * 鏂囨湰棰滆壊
+	 * 文本颜色
 	 */
 	private int mTextColor;
 	
 	/**
-	 * 鏂囨湰澶у皬
+	 * 文本大小
 	 */
 	private int mTextSize;
 	
 	/**
-	 * 鍥剧墖鐨勮祫婧怚D
+	 * 图片的资源ID
 	 */
 	private int mImgRes;
 	private Context mContext;
@@ -89,7 +89,7 @@ public class MenuItem
 	}
 	
 	/**
-	 * 鍒濆鍖栬彍鍗曢」
+	 * 初始化菜单项
 	 * @param context
 	 */
 	private void initlayout()
@@ -105,22 +105,22 @@ public class MenuItem
 			Point point = getImageDimension(context, mImgRes);
 			switch (mAlign)
 			{
-			case TEXT_BOTTOM: // 鏂囨湰灞呬笅
+			case TEXT_BOTTOM: // 文本居下
 				mLayout.setOrientation(LinearLayout.VERTICAL);
 				mLayout.addView(imageView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, point.y));
 				mLayout.addView(textView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 				break;
-			case TEXT_TOP:// 鏂囨湰灞呬笂
+			case TEXT_TOP:// 文本居上
 				mLayout.setOrientation(LinearLayout.VERTICAL);
 				mLayout.addView(textView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 				mLayout.addView(imageView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, point.y));
 				break;
-			case TEXT_LEFT:// 鏂囨湰灞呭乏
+			case TEXT_LEFT:// 文本居左
 				mLayout.setOrientation(LinearLayout.HORIZONTAL);
 				mLayout.addView(textView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
 				mLayout.addView(imageView, new ViewGroup.LayoutParams(point.x, ViewGroup.LayoutParams.MATCH_PARENT));
 				break;
-			case TEXT_RIGHT:// 鏂囨湰灞呭彸
+			case TEXT_RIGHT:// 文本居右
 				mLayout.setOrientation(LinearLayout.HORIZONTAL);
 				mLayout.addView(imageView, new ViewGroup.LayoutParams(point.x, ViewGroup.LayoutParams.MATCH_PARENT));
 				mLayout.addView(textView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -142,7 +142,7 @@ public class MenuItem
 	}
 	
 	/**
-	 * 鑾峰彇鍥剧墖鐨勫昂瀵?
+	 * 获取图片的尺寸
 	 * @param context
 	 * @param res
 	 * @return
@@ -159,7 +159,7 @@ public class MenuItem
 	}
 	
 	/**
-	 * 璁剧疆鍥剧墖璧勬簮
+	 * 设置图片资源
 	 * @param imgRes
 	 */
 	public void setImageRes(int imgRes)
@@ -168,7 +168,7 @@ public class MenuItem
 	}
 	
 	/**
-	 * 璁剧疆鏂囨湰澶у皬
+	 * 设置文本大小
 	 * @param size
 	 */
 	public void setTextSize(int size)
@@ -177,7 +177,7 @@ public class MenuItem
 	}
 	
 	/**
-	 * 璁剧疆鏂囨湰棰滆壊
+	 * 设置文本颜色
 	 * @param color
 	 */
 	public void setTextColor(int color)
@@ -186,7 +186,7 @@ public class MenuItem
 	}
 	
 	/**
-	 * 璁剧疆鏂囨湰鍐呭
+	 * 设置文本内容
 	 * @param text
 	 */
 	public void setText(String text)
@@ -195,7 +195,7 @@ public class MenuItem
 	}
 	
 	/**
-	 * 璁剧疆鏂囨湰鐨勫榻愭柟寮?
+	 * 设置文本的对齐方式
 	 * @param align
 	 */
 	public void setTextAlign(int align)
@@ -219,7 +219,7 @@ public class MenuItem
 	}
 	
 	/**
-	 * 鍒涘缓TextView
+	 * 创建TextView
 	 * @param context
 	 * @return
 	 */
@@ -250,7 +250,7 @@ public class MenuItem
 	}
 	
 	/**
-	 * 鍒涘缓ImageView
+	 * 创建ImageView
 	 * @param context
 	 * @return
 	 */
@@ -266,7 +266,7 @@ public class MenuItem
 	}
 	
 	/**
-	 * 鑾峰彇鑿滃崟椤圭洰鐨勫唴瀹?
+	 * 获取菜单项目的内容
 	 * @return
 	 */
 	public View getView()

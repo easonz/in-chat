@@ -15,6 +15,7 @@ import pro.chinasoft.adapter.ViewPagerAdapter;
 import pro.chinasoft.component.InMessageArrayAdapter;
 import pro.chinasoft.listener.SmileyOnItemClickListener;
 import pro.chinasoft.model.InMessage;
+import pro.chinasoft.model.MessageType;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -73,14 +74,20 @@ public class InChatActivity extends Activity implements OnClickListener{
 		friendId = getIntent().getStringExtra(defaultValue);
 		SharedPreferences sharedPref = this.getSharedPreferences(
 				getString(R.string.in_chat_store), Context.MODE_PRIVATE);
-		userId = sharedPref.getString(getString(R.string.username_store_key),
-				"");
+		userId = sharedPref.getString(getString(R.string.username_store_key), "");
+		
 		// get chat history data from db
-		msgs = InMessageStore.getMessages(userId, friendId, 0,5, this);
+		int start = 0;
+		int limit = 5;
+		long counts = InMessageStore.getMessageCounts(userId, friendId, this);
+		if(counts > limit){
+			start = (int) (counts - limit);
+		}
+		msgs = InMessageStore.getMessages(userId, friendId, start, limit, this);
 		if(msgs==null){
 			msgs=new ArrayList<InMessage>();
 		}
-		iadapter = new InMessageArrayAdapter(this,msgs);
+		iadapter = new InMessageArrayAdapter(this, msgs);
 		listView.setAdapter(iadapter);
 		cm = XmppTool.getConnection().getChatManager();
 		chat = cm.createChat(friendId, null);
@@ -124,7 +131,7 @@ public class InChatActivity extends Activity implements OnClickListener{
 	}
 
 	//type:true message from yourself,false:msg from friend
-	private void refresh(String content,boolean type) {
+	private void refresh(String content, MessageType type) {
 		InMessage msg = new InMessage();
 		msg.setContent(content);
 		msg.setCreateDate(new Date());
@@ -133,15 +140,15 @@ public class InChatActivity extends Activity implements OnClickListener{
 		iadapter.notifyDataSetChanged();
 		listView.setSelection(msgs.size()-1);
 	}
+	
 	BroadcastReceiver mReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			// 刷新主Activity界面
-			String friendId = intent.getStringExtra("friendId");
-			if (friendId.equals(friendId)) {
+			String id = intent.getStringExtra("friendId");
+			if (friendId.equals(id)) {
 				String content = intent.getStringExtra("content");
-				refresh(content,true);
-				
+				refresh(content, MessageType.recive);
 			}
 		}
 	};
@@ -296,9 +303,9 @@ public class InChatActivity extends Activity implements OnClickListener{
 			return;
 		}
 		// 刷新内容
-		refresh(message,false);
+		refresh(message, MessageType.send);
 		// 保存到sqlite
-		InMessageStore.saveOrUpdate(userId, friendId, message,false,this);
+		InMessageStore.saveOrUpdate(userId, friendId, message, false, this);
 		try {
 			chat.sendMessage(message);
 		} catch (XMPPException e) {
@@ -312,6 +319,4 @@ public class InChatActivity extends Activity implements OnClickListener{
 		this.unregisterReceiver(mReceiver);
 		this.finish();
 	}
-
-	
 }

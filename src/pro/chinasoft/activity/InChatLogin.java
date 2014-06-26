@@ -1,5 +1,6 @@
 package pro.chinasoft.activity;
 
+import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Presence;
 import org.xmpp.client.util.XmppTool;
@@ -10,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -46,7 +48,6 @@ public class InChatLogin extends Activity implements OnClickListener {
 		// 正在登录
 		this.layout1 = (LinearLayout) findViewById(R.id.formlogin_layout1);
 		// 登录界面
-
 		this.layout2 = (LinearLayout) findViewById(R.id.formlogin_layout2);
 
 		Button btsave = (Button) findViewById(R.id.formlogin_btsubmit);
@@ -60,54 +61,7 @@ public class InChatLogin extends Activity implements OnClickListener {
 		// 根据ID来进行提交或者取消
 		switch (v.getId()) {
 		case R.id.formlogin_btsubmit:
-			// 取得填入的用户和密码
-			final String USERID = this.useridText.getText().toString();
-			final String PWD = this.pwdText.getText().toString();
-
-			Thread t = new Thread(new Runnable() {
-				@Override
-				public void run() {
-					// sendEmptyMessage:发送一条消息
-					handler.sendEmptyMessage(1);
-					try {
-						// 连接
-						XmppTool.getConnection().login(USERID, PWD);
-						// Log.i("XMPPClient", "Logged in as " +
-						// XmppTool.getConnection().getUser());
-
-						// 状态
-						Presence presence = new Presence(
-								Presence.Type.available);
-						XmppTool.getConnection().sendPacket(presence);
-
-						Intent intent = new Intent();
-						intent.setClass(InChatLogin.this, MainTabActivity.class);
-						intent.putExtra("USERID", USERID);
-						// 保存用户名密码到本地
-
-						SharedPreferences sharedPref = InChatLogin.this
-								.getSharedPreferences(
-										getString(R.string.in_chat_store),
-										Context.MODE_PRIVATE);
-						
-						//将用户名密码保存
-						SharedPreferences.Editor editor = sharedPref.edit();
-						editor.putString(
-								getString(R.string.username_store_key), USERID);
-						editor.putString(getString(R.string.password_store_key), PWD);
-						editor.commit();
-						InChatLogin.this.startActivity(intent);
-						
-						InChatLogin.this.finish();
-					} catch (XMPPException e) {
-						XmppTool.closeConnection();
-
-						handler.sendEmptyMessage(2);
-					}
-
-				}
-			});
-			t.start();
+			new LoginThread().start();
 			break;
 		case R.id.formlogin_btcancel:
 			finish();
@@ -123,15 +77,58 @@ public class InChatLogin extends Activity implements OnClickListener {
 			if (msg.what == 1) {
 				layout1.setVisibility(View.VISIBLE);
 				layout2.setVisibility(View.GONE);
-				
-
-				
 			} else if (msg.what == 2) {
 				layout1.setVisibility(View.GONE);
 				layout2.setVisibility(View.VISIBLE);
-				Toast.makeText(InChatLogin.this, "登录失败！", Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(InChatLogin.this, "登录失败！", Toast.LENGTH_SHORT).show();
 			}
 		};
 	};
+	
+	public class LoginThread extends Thread {
+		// 取得填入的用户和密码
+		final String USERID = useridText.getText().toString();
+		final String PWD = pwdText.getText().toString();
+
+		public void run() {
+			// sendEmptyMessage:发送一条消息
+			handler.sendEmptyMessage(1);
+			try {
+				// 连接
+				XMPPConnection connect = XmppTool.getConnection();
+				connect.login(USERID, PWD);
+				Log.i("XMPPClient", "Logged in as " + XmppTool.getConnection().getUser());
+
+				// 状态
+				Presence presence = new Presence(
+						Presence.Type.available);
+				XmppTool.getConnection().sendPacket(presence);
+				
+				// 保存用户名密码到本地
+				SharedPreferences sharedPref = InChatLogin.this
+						.getSharedPreferences(
+								getString(R.string.in_chat_store),
+								Context.MODE_PRIVATE);
+				
+				//将用户名密码保存
+				SharedPreferences.Editor editor = sharedPref.edit();
+				editor.putString(
+						getString(R.string.username_store_key), USERID);
+				editor.putString(getString(R.string.password_store_key), PWD);
+				editor.commit();
+				
+				Intent intent = new Intent();
+				intent.setClass(InChatLogin.this, MainTabActivity.class);
+				intent.putExtra("USERID", USERID);
+				InChatLogin.this.startActivity(intent);
+				InChatLogin.this.finish();
+			} catch (XMPPException e) {
+				XmppTool.closeConnection();
+				handler.sendEmptyMessage(2);
+			} catch (Throwable e){
+				XmppTool.closeConnection();
+				handler.sendEmptyMessage(2);
+			}
+		}
+	}
 }

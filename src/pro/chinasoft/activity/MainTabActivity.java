@@ -53,7 +53,7 @@ public class MainTabActivity extends FragmentActivity{
 									 R.drawable.tab_square_btn,R.drawable.tab_more_btn};
 	
 	//Tab选项卡的文字
-	private String mTextviewArray[] = {"消息", "好友", "日程", "设置"};
+	private String mTextviewArray[] = {"消息", "好友", "群组", "设置"};
 	private String userid;
 	private List<Msg> listMsg = new ArrayList<Msg>();
 
@@ -76,93 +76,93 @@ public class MainTabActivity extends FragmentActivity{
 	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       this.userid = getIntent().getStringExtra("USERID");
+        this.userid = getIntent().getStringExtra("USERID");
        
 /*       	Intent intent = new Intent(this,InSmsService.class);
 		intent.putExtra("USERID", userid);
 		this.startService(intent);*/
 		
        //消息监听
-       ChatManager cm = XmppTool.getConnection().getChatManager();
-       cm.addChatListener(new ChatManagerListener() {
+		ChatManager cm = XmppTool.getConnection().getChatManager();
+		cm.addChatListener(new ChatManagerListener() {
 			@Override
-			public void chatCreated(Chat chat, boolean able) 
-			{
+			public void chatCreated(Chat chat, boolean able) {
 				chat.addMessageListener(new MessageListener() {
 					@Override
-					public void processMessage(Chat chat2, Message message)
-					{
-	
-						
+					public void processMessage(Chat chat2, Message message) {
 						String from = message.getFrom();
-						String friendId=null;
-						if(from.contains("/")){
-							friendId=from.substring(0,from.lastIndexOf("/"));
-							Log.v("--tags--", "--tags-form--接受到 "+friendId);
-							Log.v("--tags--", "--tags-message--信息 "+message.getBody());
+						String friendId = null;
+						if (from.contains("/")) {
+							friendId = from.substring(0, from.lastIndexOf("/"));
+							Log.v("--tags--", "--tags-form--接受到 " + friendId);
+							Log.v("--tags--", "--tags-message--信息 " + message.getBody());
 						}
 						try {
-							InMessageStore.saveOrUpdate(userid, friendId, message.getBody(), true,MainTabActivity.this.getApplicationContext());
+							InMessageStore.saveOrUpdate(userid, friendId,
+									message.getBody(), true,
+									MainTabActivity.this.getApplicationContext());
 						} catch (Exception e) {
-							System.out.println(e.getMessage()+"exception");
+							System.out.println(e.getMessage() + "exception");
 							Log.i("--tags--", e.getMessage());
 						}
-						//发送广播通知更新聊天页面内容
+						// 发送广播通知更新聊天页面内容
 						Intent intent = new Intent("pro.chinasoft.activity.InChatActivity");
 						intent.putExtra("content", message.getBody());
 						intent.putExtra("friendId", friendId);
-				        sendBroadcast(intent);
+						sendBroadcast(intent);
 					}
 				});
 			}
 		});
-       
-		  PacketFilter filter = new AndFilter(new PacketTypeFilter(  
-                  Presence.class));  
-          PacketListener listener = new PacketListener() {  
 
-              @Override  
-              public void processPacket(Packet packet) {  
-                  Log.i("Presence", "PresenceService------" + packet.toXML());  
-                  //看API可知道   Presence是Packet的子类  
-                  if (packet instanceof Presence) {  
-                      Log.i("Presence", packet.toXML());  
-                      Presence presence = (Presence) packet;  
-                      //Presence还有很多方法，可查看API   
-                      String from = presence.getFrom();//发送方  
-                      String to = presence.getTo();//接收方  
-                      //Presence.Type有7中状态  
-                      if (presence.getType().equals(Presence.Type.subscribe)) {//好友申请  
-                            System.out.println("好友申请 +++++");
-						/*   确认                         Presence presence = new Presence(
-						                                    Presence.Type.subscribed);//同意是
-						subscribed   拒绝是unsubscribe
-						                    presence.setTo(...);//接收方jid
-						                    presence.setFrom(...);//发送方jid
-						connection.sendPacket(presence);//connection是你自己的XMPPConnection链接
-*/                      } else if (presence.getType().equals(  
-                              Presence.Type.subscribed)) {//同意添加好友  
-                            
-                      } else if (presence.getType().equals(  
-                              Presence.Type.unsubscribe)) {//拒绝添加好友  和  删除好友  
-                            
-                      } else if (presence.getType().equals(  
-                              Presence.Type.unsubscribed)) {//这个我没用到  
-                      	
-                      } else if (presence.getType().equals(  
-                              Presence.Type.unavailable)) {//好友下线   要更新好友列表，可以在这收到包后，发广播到指定页面   更新列表  
-                            
-                      } else {//好友上线  
-                            
-                      }  
-                  }  
-              }  
-          };  
-          XmppTool.getConnection().addPacketListener(listener, filter);  
-       setContentView(R.layout.main_tab_layout);
-        
-        initView();
-       
+		PacketFilter filter = new AndFilter(new PacketTypeFilter(Presence.class));
+		PacketListener listener = new PacketListener() {
+			@Override
+			public void processPacket(Packet packet) {
+				Log.i("Presence", "PresenceService------" + packet.toXML());
+				// 看API可知道 Presence是Packet的子类
+				if (packet instanceof Presence) {
+					Log.i("Presence", packet.toXML());
+					Presence presence = (Presence) packet;
+					// Presence还有很多方法，可查看API
+					String from = presence.getFrom();// 发送方
+					String to = presence.getTo();// 接收方
+					// Presence.Type有7中状态
+					if (presence.getType().equals(Presence.Type.subscribe)) {// 好友申请
+						System.out.println("好友申请 +++++");
+						// Presence answer = new
+						// Presence(Presence.Type.subscribed);
+						// //同意是subscribed 拒绝是unsubscribe
+						// answer.setTo(...);//接收方jid
+						// answer.setFrom(...);//发送方jid
+						// connection.sendPacket(presence);
+					} else if (presence.getType().equals(
+							Presence.Type.subscribed)) {
+						// 同意添加好友
+
+					} else if (presence.getType().equals(
+							Presence.Type.unsubscribe)) {
+						// 拒绝添加好友 和 删除好友
+
+					} else if (presence.getType().equals(
+							Presence.Type.unsubscribed)) {
+						// 这个我没用到
+
+					} else if (presence.getType().equals(
+							Presence.Type.unavailable)) {
+						// 好友下线 要更新好友列表，可以在这收到包后，发广播到指定页面 更新列表
+
+					} else {
+						// 好友上线
+						
+					}
+				}
+			}
+		};
+		XmppTool.getConnection().addPacketListener(listener, filter);
+		setContentView(R.layout.main_tab_layout);
+		
+		initView();
     }
 	
 	@Override
@@ -183,7 +183,6 @@ public class MainTabActivity extends FragmentActivity{
 		
 		//得到fragment的个数
 		int count = fragmentArray.length;	
-				
 		for(int i = 0; i < count; i++){	
 			//为每一个Tab按钮设置图标、文字和内容
 			TabSpec tabSpec = mTabHost.newTabSpec(mTextviewArray[i]).setIndicator(getTabItemView(i));
@@ -304,38 +303,36 @@ public class MainTabActivity extends FragmentActivity{
 		};
 	};	
 
-	//退出
+	// 退出
 	@Override
-	public void onBackPressed()
-	{
-		
-		AlertDialog.Builder logoutDialog = new AlertDialog.Builder(MainTabActivity.this);//(FragmentPage2.this);  
-        logoutDialog.setTitle("确定退出IN-CHAT吗？");  
-        logoutDialog.setIcon(R.drawable.icon_home_nor);  
-        logoutDialog.setPositiveButton("确认", new DialogInterface.OnClickListener()  
-                {           
-                    @Override    
-                    public void onClick(DialogInterface dialog, int which)   
-                        {  
+	public void onBackPressed() {
 
-                          // 点击“<strong>确认</strong>”后的操作    
-                   		XmppTool.closeConnection();
-                   		//关闭数据库
-                   		InMessageStore.close();
-                   		System.exit(0);
-                   		android.os.Process.killProcess(android.os.Process.myPid());
-                                            
-                        }    
-                    });    
-        logoutDialog.setNegativeButton("返回", new DialogInterface.OnClickListener()   
-                        {           
-                            @Override    
-                            public void onClick(DialogInterface dialog, int which){    
-                                // 点击“<strong>返回</strong>”后的操作,这里不设置没有任何操作    
-                            }    
-                        });
-        logoutDialog.show();
-        
-         
+		AlertDialog.Builder logoutDialog = new AlertDialog.Builder(
+				MainTabActivity.this);// (FragmentPage2.this);
+		logoutDialog.setTitle("确定退出IN-CHAT吗？");
+		logoutDialog.setIcon(R.drawable.icon_home_nor);
+		logoutDialog.setPositiveButton("确认",
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+
+						// 点击“<strong>确认</strong>”后的操作
+						XmppTool.closeConnection();
+						// 关闭数据库
+						InMessageStore.close();
+						System.exit(0);
+						android.os.Process.killProcess(android.os.Process
+								.myPid());
+
+					}
+				});
+		logoutDialog.setNegativeButton("返回",
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// 点击“<strong>返回</strong>”后的操作,这里不设置没有任何操作
+					}
+				});
+		logoutDialog.show();
 	}
 }

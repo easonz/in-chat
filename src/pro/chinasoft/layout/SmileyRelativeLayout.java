@@ -25,7 +25,7 @@ public class SmileyRelativeLayout extends RelativeLayout implements
 	private List<View> views;
 	private ArrayList<ImageView> pointViews;
 	
-	/** 娓告爣鏄剧ず甯冨眬 */
+	/** 游标显示布局 */
 	private LinearLayout layout_point;
 	
 	public SmileyRelativeLayout(Context context) {

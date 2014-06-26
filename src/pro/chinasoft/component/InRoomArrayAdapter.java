@@ -3,6 +3,7 @@ package pro.chinasoft.component;
 import java.util.List;
 
 import pro.chinasoft.activity.R;
+import pro.chinasoft.model.InRoom;
 import pro.chinasoft.model.InUser;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,14 +13,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class InUserArrayAdapter extends ArrayAdapter<InUser> {
+public class InRoomArrayAdapter extends ArrayAdapter<InRoom> {
 
-	public InUserArrayAdapter(Context context, int resource,
-			List<InUser> objects) {
+	public InRoomArrayAdapter(Context context, int resource,
+			List<InRoom> objects) {
 		super(context, resource, objects);
 		this.init(context, resource);
 	}
-	public InUserArrayAdapter(Context context, int resource) {
+	public InRoomArrayAdapter(Context context, int resource) {
 		super(context, resource);
 		this.init(context, resource);
 	}
@@ -29,19 +30,18 @@ public class InUserArrayAdapter extends ArrayAdapter<InUser> {
 	private void init(Context context, int resource) {
 		mInflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		InUser item = getItem(position);
+		InRoom item = getItem(position);
 		View view = mInflater.inflate(R.layout.in_user_list_item, parent, false);
 		
 		ImageView icon = (ImageView)view.findViewById(R.id.u_avatar);
 		icon.setImageResource(R.drawable.icon_home_nor);
 		
 		TextView label = (TextView) view.findViewById(R.id.u_nick);
-		label.setText(item.getNick());
+		label.setText(item.getName());
 		
 		TextView textView01 = (TextView) view.findViewById(R.id.u_TextView01);
 		String text = "1";
